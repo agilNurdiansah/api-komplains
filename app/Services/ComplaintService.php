@@ -7,6 +7,10 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TicketCreated;
+
+
 
 
 class ComplaintService
@@ -41,8 +45,12 @@ class ComplaintService
         $ticket->status = 'open';
         $ticket->save();
 
+        // Send email to the user
+        Mail::to($user->email)->send(new TicketCreated($ticket));
+
         return $complaint;
     }
+
 
     public function getComplaintByUserNameAndId($username, $id)
     {
@@ -77,6 +85,7 @@ class ComplaintService
         $ticket = Ticket::where('complaint_id', $complaint->id)->firstOrFail();
         $ticket->status = $status;
         $ticket->save();
+
 
         return [
             'complaint' => $complaint,
