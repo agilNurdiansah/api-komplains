@@ -39,7 +39,7 @@ class TicketCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.ticket_created', // Update this line with the correct view path
+            view: 'email.ticket_created',
             with: [
                 'ticket' => $this->ticket,
             ],
