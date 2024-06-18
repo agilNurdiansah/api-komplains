@@ -76,15 +76,26 @@ class ComplaintService
 
         $status = $request->input('status');
 
+        $complaint = Complaint::findOrFail($id);
+
+        $user = User::findOrFail($complaint->user_id);
+
         // Update the complaint status
         $complaint = Complaint::findOrFail($id);
         $complaint->status = $status;
+        $complaint->user_id = $user->id;
+
+
+
         $complaint->save();
 
         // Update the ticket status associated with the complaint
         $ticket = Ticket::where('complaint_id', $complaint->id)->firstOrFail();
         $ticket->status = $status;
         $ticket->save();
+        // $ticket->update();
+
+        Mail::to($user->email)->send(new TicketCreated($ticket));
 
 
         return [
