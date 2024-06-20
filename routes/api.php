@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\TicketController;
-use App\HTTP\Controllers\UserController;
+use App\Http\Controllers\UserController;
 
 
 /*
