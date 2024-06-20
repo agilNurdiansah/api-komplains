@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\TicketController;
+use App\HTTP\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +24,22 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/complaints', [AdminController::class, 'getComplaints']);
         Route::post('/admin/complaints', [ComplaintController::class, 'createComplaint'])->name('complaints.create');
         Route::post('/admin/complaints/update/{id}', [ComplaintController::class, 'updateComplaintAndTicketStatus'])->name('complaints.update');
 
+        Route::get('/admin-users', [UserController::class, 'getAdminUsers']);
+
         Route::get('/admin/tickets', [AdminController::class, 'getTickets']);
         Route::post('/admin/tickets', [AdminController::class, 'sendTicket']);
     });
 
     Route::middleware('role:customer')->group(function () {
+        Route::get('/admin-users', [UserController::class, 'getAdminUsers']);
         Route::get('/customer/complaints', [ComplaintController::class, 'viewComplaintsByUserId'])->name('complaints.index');
         Route::get('/customer/tickets', [TicketController::class, 'viewTickets'])->name('tickets.index');
     });
