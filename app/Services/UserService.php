@@ -15,4 +15,14 @@ class UserService
     {
         return User::admins()->get();
     }
+
+     /**
+     * Get all users with the role of 'admin'.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getCustomerUser()
+    {
+        return User::customer()->get();
+    }
 }

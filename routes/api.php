@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/admin-users', [UserController::class, 'getAdminUsers']);
 
+        Route::get('/customers-users', [UserController::class,'getCustomerUsers']);
+
         Route::get('/admin/tickets', [AdminController::class, 'getTickets']);
         Route::post('/admin/tickets', [AdminController::class, 'sendTicket']);
     });

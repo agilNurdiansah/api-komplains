@@ -30,4 +30,16 @@ class UserController extends Controller
 
         return response()->json($admins);
     }
+
+    /**
+     * Display a listing of Customer users.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCustomerUsers()
+    {
+        $customers = $this->userService->getCustomerUser();
+
+        return response()->json($customers);
+    }
 }
