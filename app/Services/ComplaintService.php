@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketCreated;
+use App\Mail\TicketUpdated;
 
 
 
@@ -95,7 +96,7 @@ class ComplaintService
         $ticket->save();
         // $ticket->update();
 
-        Mail::to($user->email)->send(new TicketCreated($ticket));
+        Mail::to($user->email)->send(new TicketUpdated($ticket));
 
 
         return [
