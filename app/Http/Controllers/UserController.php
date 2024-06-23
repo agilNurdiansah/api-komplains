@@ -66,4 +66,15 @@ class UserController extends Controller
         $userCount = $this->userService->countAllUsers();
         return response()->json(['total_user_count' => $userCount]);
     }
+
+     /**
+     * Get the total count of customer.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function countCustomers(): JsonResponse
+    {
+        $customerCount = $this->userService->countCustomerUsers();
+        return response()->json(['Customer_count' => $customerCount]);
+    }
 }

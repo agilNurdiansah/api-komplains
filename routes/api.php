@@ -25,6 +25,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/admins/count', [UserController::class, 'count']);
 Route::get('/users/count', [UserController::class, 'countAllUsers']);
+Route::get('/users/customers/count', [UserController::class, 'countCustomers']);
 
 
 Route::middleware('auth:sanctum')->group(function () {

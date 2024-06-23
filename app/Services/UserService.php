@@ -37,6 +37,16 @@ class UserService
         return User::admins()->count();
     }
 
+     /**
+     * Count the number of users with the role of 'admin'.
+     *
+     * @return int
+     */
+    public function countCustomerUsers()
+    {
+        return User::customer()->count();
+    }
+
   /**
      * Count the total number of users.
      *
