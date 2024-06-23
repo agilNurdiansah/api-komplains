@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 
+
 class UserService
 {
     /**
@@ -25,4 +26,26 @@ class UserService
     {
         return User::customer()->get();
     }
+
+    /**
+     * Count the number of users with the role of 'admin'.
+     *
+     * @return int
+     */
+    public function countAdminUsers()
+    {
+        return User::admins()->count();
+    }
+
+  /**
+     * Count the total number of users.
+     *
+     * @return int
+     */
+    public function countAllUsers()
+    {
+        return User::count();
+    }
+
+
 }

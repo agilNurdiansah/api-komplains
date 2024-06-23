@@ -23,7 +23,8 @@ use App\Http\Controllers\UserController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-
+Route::get('/admins/count', [UserController::class, 'count']);
+Route::get('/users/count', [UserController::class, 'countAllUsers']);
 
 
 Route::middleware('auth:sanctum')->group(function () {

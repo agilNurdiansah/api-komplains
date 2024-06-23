@@ -44,7 +44,7 @@ class ComplaintService
         $ticket->date_sent = now();
         $ticket->description = $complaint->description;
         $ticket->status = 'open';
-        $ticket->save();
+        // $ticket->save();
 
         // Send email to the user
         Mail::to($user->email)->send(new TicketCreated($ticket));

@@ -22,6 +22,8 @@ class TicketService
         $ticket->status = $request->status;
         $ticket->save();
 
+        // Mail::to($user->email)->send(new TicketCreated($ticket));
+
         return $ticket;
     }
 

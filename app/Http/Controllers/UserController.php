@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
 
 class UserController extends Controller
 {
@@ -41,5 +43,27 @@ class UserController extends Controller
         $customers = $this->userService->getCustomerUser();
 
         return response()->json($customers);
+    }
+
+     /**
+     * Get the count of admin users.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function count(): JsonResponse
+    {
+        $adminUserCount = $this->userService->countAdminUsers();
+        return response()->json(['admin_count' => $adminUserCount]);
+    }
+
+     /**
+     * Get the total count of users.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function countAllUsers(): JsonResponse
+    {
+        $userCount = $this->userService->countAllUsers();
+        return response()->json(['total_user_count' => $userCount]);
     }
 }
