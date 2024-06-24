@@ -30,15 +30,17 @@ class ComplaintController extends Controller
         return response()->json($complaint);
     }
 
-    public function viewComplaints()
+    public function viewComplaints(Request $request)
     {
-        $complaints = $this->complaintService->viewComplaints();
+        $perPage = $request->input('per_page', 15);
+        $complaints = $this->complaintService->viewComplaints()->paginate($perPage);
         return response()->json($complaints);
     }
 
-    public function viewComplaintsByUserId()
+    public function viewComplaintsByUserId(Request $request)
     {
-        $complaints = $this->complaintService->getComplaintsByUserId();
+        $perPage = $request->input('per_page', 15);
+        $complaints = $this->complaintService->getComplaintsByUserId()->paginate($perPage);
         return response()->json($complaints);
     }
 

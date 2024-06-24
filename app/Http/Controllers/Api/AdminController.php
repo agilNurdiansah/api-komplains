@@ -14,15 +14,17 @@ class AdminController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function getComplaints()
+    public function getComplaints(Request $request)
     {
-        $complaints = Complaint::all();
+        $perPage = $request->input('per_page', 15);
+        $complaints = Complaint::paginate($perPage);
         return response()->json($complaints);
     }
 
-    public function getTickets()
+    public function getTickets(Request $request)
     {
-        $tickets = Ticket::all();
+        $perPage = $request->input('per_page', 15);
+        $tickets = Ticket::paginate($perPage);
         return response()->json($tickets);
     }
 
