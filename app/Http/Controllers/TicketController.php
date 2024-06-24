@@ -25,4 +25,12 @@ class TicketController extends Controller
         $tickets = $this->ticketService->viewTickets();
         return response()->json($tickets);
     }
+
+    public function getTicketDetailById($id)
+    {
+        $ticket = $this->ticketService->getTicketDetailById($id);
+        return response()->json($ticket);
+    }
+
+
 }

@@ -55,4 +55,12 @@ class ComplaintController extends Controller
         ]);
     }
 
+    public function getComplaintById($id)
+    {
+        $complaint = $this->complaintService->getComplaintDetailById($id);
+        return response()->json($complaint);
+    }
+
+
+
 }

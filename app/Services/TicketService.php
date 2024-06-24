@@ -30,19 +30,15 @@ class TicketService
             $ticket->status = $request->status;
             $ticket->save();
 
-            // Mendapatkan objek user terkait dengan keluhan
             $user = $complaint->user;
 
-            // Mengirim email ke user
             Mail::to($user->email)->send(new TicketCreated($ticket));
 
-            // Mengembalikan response yang sesuai
             return [
                 'status' => 'E-ticket created successfully!',
                 'ticket' => $ticket,
             ];
         } catch (\Exception $e) {
-            // Tangani exception di sini
             Log::error('Gagal mengirim email: ' . $e->getMessage());
             return response()->json(['error' => 'Gagal mengirim email'], 500);
         }
@@ -51,5 +47,11 @@ class TicketService
     public function viewTickets()
     {
         return Ticket::all();
+    }
+
+    public function getTicketDetailById($id)
+    {
+        $ticket = Ticket::with('complaint')->findOrFail($id);
+        return $ticket;
     }
 }

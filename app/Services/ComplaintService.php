@@ -115,5 +115,13 @@ class ComplaintService
         return $complaints;
     }
 
+    public function getComplaintDetailById($id)
+    {
+        $complaint = Complaint::with(['user', 'tickets'])->findOrFail($id);
+        return $complaint;
+    }
+
+
+
 
 }
