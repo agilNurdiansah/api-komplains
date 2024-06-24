@@ -20,7 +20,6 @@ class ComplaintController extends Controller
         return response()->json([
             'status' => 'Complaint filed successfully!',
             'complaint' => $complaint,
-            'ticket' => $complaint->ticket,
         ], 201);
     }
 

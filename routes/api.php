@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/customers-users', [UserController::class,'getCustomerUsers']);
 
         Route::get('/admin/tickets', [AdminController::class, 'getTickets']);
-        Route::post('/admin/tickets', [AdminController::class, 'sendTicket']);
+        Route::post('/admin/tickets', [TicketController::class, 'createTicket']);
     });
 
     Route::middleware('role:customer')->group(function () {
