@@ -33,17 +33,16 @@ class ComplaintController extends Controller
     public function viewComplaints(Request $request)
     {
         $perPage = $request->input('per_page', 15);
-        $complaints = $this->complaintService->viewComplaints()->paginate($perPage);
+        $complaints = $this->complaintService->viewComplaints($perPage);
         return response()->json($complaints);
     }
 
     public function viewComplaintsByUserId(Request $request)
     {
         $perPage = $request->input('per_page', 15);
-        $complaints = $this->complaintService->getComplaintsByUserId()->paginate($perPage);
+        $complaints = $this->complaintService->getComplaintsByUserId($request->user()->id, $perPage);
         return response()->json($complaints);
     }
-
 
     public function updateComplaintAndTicketStatus(Request $request, $id)
     {
@@ -60,7 +59,4 @@ class ComplaintController extends Controller
         $complaint = $this->complaintService->getComplaintDetailById($id);
         return response()->json($complaint);
     }
-
-
-
 }

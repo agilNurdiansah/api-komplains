@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketCreated;
 use App\Mail\TicketUpdated;
 
-
-
-
 class ComplaintService
 {
     public function createComplaint(Request $request)
@@ -44,14 +41,13 @@ class ComplaintService
         $ticket->date_sent = now();
         $ticket->description = $complaint->description;
         $ticket->status = 'open';
-        // $ticket->save();
+        $ticket->save();
 
         // Send email to the user
         Mail::to($user->email)->send(new TicketCreated($ticket));
 
         return $complaint;
     }
-
 
     public function getComplaintByUserNameAndId($username, $id)
     {
@@ -63,16 +59,15 @@ class ComplaintService
         return $complaint;
     }
 
-    public function viewComplaints()
+    public function viewComplaints($perPage)
     {
-        return Complaint::all();
+        return Complaint::paginate($perPage);
     }
-
 
     public function updateComplaintAndTicketStatus(Request $request, $id)
     {
         $request->validate([
-           'status' => 'required|in:open,pending,closed',
+            'status' => 'required|in:open,pending,closed',
         ]);
 
         $status = $request->input('status');
@@ -82,22 +77,15 @@ class ComplaintService
         $user = User::findOrFail($complaint->user_id);
 
         // Update the complaint status
-        $complaint = Complaint::findOrFail($id);
         $complaint->status = $status;
-        $complaint->user_id = $user->id;
-
-
-
         $complaint->save();
 
         // Update the ticket status associated with the complaint
         $ticket = Ticket::where('complaint_id', $complaint->id)->firstOrFail();
         $ticket->status = $status;
         $ticket->save();
-        // $ticket->update();
 
         Mail::to($user->email)->send(new TicketUpdated($ticket));
-
 
         return [
             'complaint' => $complaint,
@@ -105,23 +93,13 @@ class ComplaintService
         ];
     }
 
-    public function getComplaintsByUserId()
+    public function getComplaintsByUserId($userId, $perPage)
     {
-        // Get the authenticated user's ID
-        $userId = Auth::id();
-
-        $complaints = Complaint::where('user_id', $userId)->get();
-
-        return $complaints;
+        return Complaint::where('user_id', $userId)->paginate($perPage);
     }
 
     public function getComplaintDetailById($id)
     {
-        $complaint = Complaint::with(['user', 'tickets'])->findOrFail($id);
-        return $complaint;
+        return Complaint::with(['user', 'tickets'])->findOrFail($id);
     }
-
-
-
-
 }
