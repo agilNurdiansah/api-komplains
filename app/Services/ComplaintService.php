@@ -10,33 +10,43 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketCreated;
 use App\Mail\TicketUpdated;
+use Illuminate\Support\Facades\Storage;
+
 
 class ComplaintService
 {
     public function createComplaint(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string|exists:users,username',
-            'description' => 'required|string',
-            'evidence' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mkv|max:20480',
-        ]);
+{
+    $request->validate([
+        'username' => 'required|string|exists:users,username',
+        'description' => 'required|string',
+        'evidence' => 'nullable|file|mimes:jpg,jpeg,png,mp4,mkv|max:20480',
+    ]);
 
-        $user = User::where('username', $request->input('username'))->firstOrFail();
+    $user = User::where('username', $request->input('username'))->firstOrFail();
 
-        $complaint = new Complaint();
-        $complaint->user_id = $user->id;
-        $complaint->date_filed = now();
-        $complaint->description = $request->input('description');
+    $complaint = new Complaint();
+    $complaint->user_id = $user->id;
+    $complaint->date_filed = now();
+    $complaint->description = $request->input('description');
 
-        if ($request->hasFile('evidence')) {
-            $complaint->evidence = $request->file('evidence')->store('evidences');
-        }
+    if ($request->hasFile('evidence')) {
+        $file = $request->file('evidence');
+        $fileName = $file->getClientOriginalName();
+        $filePath = 'public/';
 
-        $complaint->status = 'open';
-        $complaint->save();
+        // Store the file on disk
+        $storedPath = Storage::putFileAs($filePath, $file, $fileName);
 
-        return $complaint;
+        // Save the stored path to the complaint model
+        $complaint->evidence = Storage::url($storedPath);
     }
+
+    $complaint->status = 'open';
+    $complaint->save();
+
+    return $complaint;
+}
 
     public function getComplaintByUserNameAndId($username, $id)
     {
