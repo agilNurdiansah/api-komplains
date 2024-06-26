@@ -54,9 +54,24 @@ class ComplaintController extends Controller
         ]);
     }
 
+     /**
+     * Get detailed complaint by ID including user and tickets.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getComplaintById($id)
     {
         $complaint = $this->complaintService->getComplaintDetailById($id);
+
+        $baseImageUrl = url('storage');
+
+        if (!empty($complaint->evidence)) {
+            $complaint->evidence_url = $baseImageUrl . '/' . $complaint->evidence;
+        } else {
+            $complaint->evidence_url = null;
+        }
+
         return response()->json($complaint);
     }
 }
