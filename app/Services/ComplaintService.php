@@ -36,6 +36,16 @@ class ComplaintService
         $complaint->save();
 
         // Create a ticket associated with this complaint
+         // Create a ticket associated with this complaint
+         $ticket = new Ticket();
+         $ticket->complaint_id = $complaint->id;
+         $ticket->date_sent = now();
+         $ticket->description = $complaint->description;
+         $ticket->status = 'open';
+         $ticket->save();
+
+         // Send email to the user
+         Mail::to($user->email)->send(new TicketCreated($ticket));
 
 
         return $complaint;
