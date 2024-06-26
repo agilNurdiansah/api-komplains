@@ -92,10 +92,15 @@ class ComplaintService
         ];
     }
 
-    public function getComplaintsByUserId($userId, $perPage)
+    public function getComplaintsByUserId(Request $request, $userId, $perPage, $sortBy = 'created_at', $sortOrder = 'asc')
     {
-        return Complaint::where('user_id', $userId)->paginate($perPage);
+        $sortOrder = strtolower($sortOrder) === 'desc' ? 'desc' : 'asc';
+
+        return Complaint::where('user_id', $userId)
+                        ->orderBy($sortBy, $sortOrder)
+                        ->paginate($perPage);
     }
+
 
     public function getComplaintDetailById($id)
     {

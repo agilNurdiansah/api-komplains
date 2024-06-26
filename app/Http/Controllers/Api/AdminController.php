@@ -16,15 +16,29 @@ class AdminController extends Controller
 
     public function getComplaints(Request $request)
     {
-        $perPage = $request->input('per_page', 15);
-        $complaints = Complaint::paginate($perPage);
+        $perPage = $request->input('per_page', 5);
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'asc');
+
+        $sortOrder = strtolower($sortOrder) === 'desc' ? 'desc' : 'asc';
+
+        $complaints = Complaint::orderBy($sortBy, $sortOrder)
+                               ->paginate($perPage);
+
         return response()->json($complaints);
     }
 
     public function getTickets(Request $request)
     {
-        $perPage = $request->input('per_page', 15);
-        $tickets = Ticket::paginate($perPage);
+        $perPage = $request->input('per_page', 5);
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'asc');
+
+        $sortOrder = strtolower($sortOrder) === 'desc' ? 'desc' : 'asc';
+
+        $tickets = Ticket::orderBy($sortBy, $sortOrder)
+                         ->paginate($perPage);
+
         return response()->json($tickets);
     }
 

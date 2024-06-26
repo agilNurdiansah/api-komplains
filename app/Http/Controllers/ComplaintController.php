@@ -32,18 +32,25 @@ class ComplaintController extends Controller
 
     public function viewComplaints(Request $request)
     {
-        $perPage = $request->input('per_page', 15);
+        $perPage = $request->input('per_page', 5);
         $complaints = $this->complaintService->viewComplaints($perPage);
         return response()->json($complaints);
     }
 
     public function viewComplaintsByUserId(Request $request)
     {
-        $perPage = $request->input('per_page', 15);
-        $complaints = $this->complaintService->getComplaintsByUserId($request->user()->id, $perPage);
+        $perPage = $request->input('per_page', 5);
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'asc');
+
+        // Validasi sortOrder agar hanya menerima 'asc' atau 'desc'
+        $sortOrder = strtolower($sortOrder) === 'desc' ? 'desc' : 'asc';
+
+        $complaints = $this->complaintService
+                           ->getComplaintsByUserId($request, $request->user()->id, $perPage, $sortBy, $sortOrder);
+
         return response()->json($complaints);
     }
-
     public function updateComplaintAndTicketStatus(Request $request, $id)
     {
         $result = $this->complaintService->updateComplaintAndTicketStatus($request, $id);
