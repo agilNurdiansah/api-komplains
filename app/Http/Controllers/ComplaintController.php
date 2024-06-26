@@ -67,11 +67,12 @@ class ComplaintController extends Controller
         $baseImageUrl = url('storage');
 
         if (!empty($complaint->evidence)) {
-            $complaint->evidence_url = $baseImageUrl . '/' . $complaint->evidence;
+            $complaint->evidence_url = $baseImageUrl . '/' . str_replace('evidences/', '', $complaint->evidence);
         } else {
             $complaint->evidence_url = null;
         }
 
         return response()->json($complaint);
     }
+
 }
