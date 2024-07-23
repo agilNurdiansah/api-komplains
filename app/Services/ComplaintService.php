@@ -106,4 +106,27 @@ class ComplaintService
     {
         return Complaint::with(['user', 'tickets'])->findOrFail($id);
     }
+
+    public function deleteComplaintAndTicket($id)
+    {
+        $complaint = Complaint::findOrFail($id);
+
+        // Find and delete the associated ticket
+        $ticket = Ticket::where('complaint_id', $complaint->id)->first();
+        if ($ticket) {
+            $ticket->delete();
+        }
+
+        // Delete the evidence file if it exists
+        if ($complaint->evidence) {
+            $evidencePath = str_replace('/storage', 'public', $complaint->evidence);
+            Storage::delete($evidencePath);
+        }
+
+        // Delete the complaint
+        $complaint->delete();
+
+        return ['status' => 'Complaint and associated ticket deleted successfully'];
+    }
+
 }

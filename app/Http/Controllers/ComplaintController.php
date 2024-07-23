@@ -84,5 +84,10 @@ class ComplaintController extends Controller
         return response()->json($complaint);
     }
 
+    public function deleteComplaintAndTicket($id)
+    {
+        $result = $this->complaintService->deleteComplaintAndTicket($id);
+        return response()->json($result);
+    }
 
 }

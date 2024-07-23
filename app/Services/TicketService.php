@@ -9,6 +9,8 @@ use App\Mail\TicketCreated;
 use App\Models\User;
 use App\Models\Complaint;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class TicketService
 {
@@ -54,4 +56,13 @@ class TicketService
         $ticket = Ticket::with('complaint')->findOrFail($id);
         return $ticket;
     }
+
+    public function deleteTicket($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->delete();
+
+        return ['status' => 'E-ticket deleted successfully'];
+    }
+
 }

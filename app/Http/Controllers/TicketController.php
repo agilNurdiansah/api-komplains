@@ -32,5 +32,11 @@ class TicketController extends Controller
         return response()->json($ticket);
     }
 
+    public function deleteTicket($id)
+    {
+        $result = $this->ticketService->deleteTicket($id);
+        return response()->json($result);
+    }
+
 
 }

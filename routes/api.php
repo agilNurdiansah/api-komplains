@@ -28,25 +28,27 @@ Route::get('/users/customers/count', [UserController::class, 'countCustomers']);
 Route::get('/admin-users', [UserController::class, 'getAdminUsers']);
 Route::get('/detail/complaints/{id}', [ComplaintController::class, 'getComplaintById'])->name('complaints.detail');
 
-
-
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/complaints', [AdminController::class, 'getComplaints']);
         Route::post('/admin/complaints', [ComplaintController::class, 'createComplaint'])->name('complaints.create');
         Route::post('/admin/complaints/update/{id}', [ComplaintController::class, 'updateComplaintAndTicketStatus'])->name('complaints.update');
+        Route::delete('/admin/complaints/{id}', [ComplaintController::class, 'deleteComplaintAndTicket'])->name('complaints.delete');
 
         Route::get('/customers-users', [UserController::class, 'getCustomerUsers']);
         Route::get('/admin/tickets', [AdminController::class, 'getTickets']);
         Route::post('/admin/tickets', [TicketController::class, 'createTicket']);
         Route::get('/admin/detail/tickets/{id}', [TicketController::class, 'getTicketDetailById'])->name('tickets.detail');
-
+        Route::delete('/admin/tickets/{id}', [TicketController::class, 'deleteTicket'])->name('tickets.delete');
     });
 
     Route::middleware('role:customer')->group(function () {
         Route::get('/customer/complaints', [ComplaintController::class, 'viewComplaintsByUserId'])->name('complaints.index');
+        Route::delete('/customer/complaints/{id}', [ComplaintController::class, 'deleteComplaintAndTicket'])->name('complaints.delete');
+
         Route::get('/customer/tickets', [TicketController::class, 'viewTickets'])->name('tickets.index');
+        Route::delete('/customer/tickets/{id}', [TicketController::class, 'deleteTicket'])->name('tickets.delete');
     });
+
 
 });
